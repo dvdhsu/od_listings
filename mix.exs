@@ -36,6 +36,7 @@ defmodule OdListings.Mixfile do
      {:geo, "~> 0.17"},
      {:phoenix_html, "~> 2.1"},
      {:phoenix_live_reload, "~> 1.0", only: :dev},
+     {:ex_spec, "~> 1.0.0", only: :test},
      {:cowboy, "~> 1.0"}]
   end
 
