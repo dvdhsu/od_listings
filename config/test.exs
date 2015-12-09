@@ -16,4 +16,5 @@ config :od_listings, OdListings.Repo,
   password: "postgres",
   database: "od_listings_test",
   hostname: "localhost",
-  pool: Ecto.Adapters.SQL.Sandbox
+  pool: Ecto.Adapters.SQL.Sandbox,
+  extensions: [{Geo.PostGIS.Extension, library: Geo}]

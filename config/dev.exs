@@ -39,4 +39,5 @@ config :od_listings, OdListings.Repo,
   password: "postgres",
   database: "od_listings_dev",
   hostname: "localhost",
-  pool_size: 10
+  pool_size: 10,
+  extensions: [{Geo.PostGIS.Extension, library: Geo}]
