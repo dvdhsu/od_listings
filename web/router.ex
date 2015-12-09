@@ -15,6 +15,6 @@ defmodule OdListings.Router do
 
   scope "/", OdListings do
     pipe_through :api
-    resources "/listings", ListingsController, only: [:show, :index]
+    resources "/listings", ListingController, only: [:show, :index]
   end
 end

@@ -34,6 +34,7 @@ defmodule OdListings.Mixfile do
      {:phoenix_ecto, "~> 1.1"},
      {:postgrex, ">= 0.0.0"},
      {:geo, "~> 0.17"},
+     {:csv, "~> 1.2.0"},
      {:phoenix_html, "~> 2.1"},
      {:phoenix_live_reload, "~> 1.0", only: :dev},
      {:ex_spec, "~> 1.0.0", only: :test},
