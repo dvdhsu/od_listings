@@ -38,6 +38,7 @@ defmodule OdListings.Mixfile do
      {:phoenix_html, "~> 2.1"},
      {:phoenix_live_reload, "~> 1.0", only: :dev},
      {:ex_spec, "~> 1.0.0", only: :test},
+     {:scrivener, "~> 1.0"},
      {:cowboy, "~> 1.0"}]
   end
 
