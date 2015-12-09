@@ -33,6 +33,7 @@ defmodule OdListings.Mixfile do
     [{:phoenix, "~> 1.0.4"},
      {:phoenix_ecto, "~> 1.1"},
      {:postgrex, ">= 0.0.0"},
+     {:geo, "~> 0.17"},
      {:phoenix_html, "~> 2.1"},
      {:phoenix_live_reload, "~> 1.0", only: :dev},
      {:cowboy, "~> 1.0"}]
