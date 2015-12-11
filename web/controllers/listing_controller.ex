@@ -8,6 +8,7 @@ defmodule OdListings.ListingController do
 
     page = Listing
     |> params_to_query(cleaned_params)
+    |> sort_by(_params)
     |> Repo.paginate(_params)
 
     conn
@@ -32,6 +33,19 @@ defmodule OdListings.ListingController do
         _ -> query
       end
     end)
+  end
+
+  defp sort_by(query, params) do
+    query = case params["sort_by"] do
+      "price_asc" ->  query |> order_by([l], asc: l.price)
+      "bed_asc" ->    query |> order_by([l], asc: l.bedrooms)
+      "bath_asc" ->   query |> order_by([l], asc: l.bathrooms)
+      "price_desc" -> query |> order_by([l], desc: l.price)
+      "bed_desc" ->   query |> order_by([l], desc: l.bedrooms)
+      "bath_desc" ->  query |> order_by([l], desc: l.bathrooms)
+      _ -> query
+    end
+    query
   end
 
   defp clean_params(params) do

@@ -18,7 +18,7 @@ defmodule OdListings.ListingControllerTest do
       insertions ++ [(Repo.insert! changeset)]
     end
 
-    con = conn() |> put_req_header("accept", "application/json")
+    conn() |> put_req_header("accept", "application/json")
     {:ok, conn: conn, listings: listings}
   end
 
@@ -45,6 +45,80 @@ defmodule OdListings.ListingControllerTest do
   it "does not show resource and instead throw error when id is nonexistent", %{conn: conn} do
     assert_raise Ecto.NoResultsError, fn ->
       get conn, listing_path(conn, :show, -1)
+    end
+  end
+
+  describe "sort" do
+    context "prices" do
+      it "by asc" do
+        conn = get conn, listing_path(conn, :index), %{sort_by: "price_asc"}
+        assert json_response(conn, 200)["type"] == "FeatureCollection"
+        assert (length json_response(conn, 200)["features"]) == 2
+        min = (hd json_response(conn, 200)["features"])["properties"]["price"]
+        Enum.map json_response(conn, 200)["features"], fn l ->
+          assert l["properties"]["price"] >= min
+          min = l["properties"]["price"]
+        end
+      end
+
+      it "by desc" do
+        conn = get conn, listing_path(conn, :index), %{sort_by: "price_desc"}
+        assert json_response(conn, 200)["type"] == "FeatureCollection"
+        assert (length json_response(conn, 200)["features"]) == 2
+        max = (hd json_response(conn, 200)["features"])["properties"]["price"]
+        Enum.map json_response(conn, 200)["features"], fn l ->
+          assert l["properties"]["price"] <= max
+          max = l["properties"]["price"]
+        end
+      end
+    end
+
+    context "bedrooms" do
+      it "by asc" do
+        conn = get conn, listing_path(conn, :index), %{sort_by: "bed_asc"}
+        assert json_response(conn, 200)["type"] == "FeatureCollection"
+        assert (length json_response(conn, 200)["features"]) == 2
+        min = (hd json_response(conn, 200)["features"])["properties"]["bed"]
+        Enum.map json_response(conn, 200)["features"], fn l ->
+          assert l["properties"]["bed"] >= min
+          min = l["properties"]["bed"]
+        end
+      end
+
+      it "by desc" do
+        conn = get conn, listing_path(conn, :index), %{sort_by: "bed_desc"}
+        assert json_response(conn, 200)["type"] == "FeatureCollection"
+        assert (length json_response(conn, 200)["features"]) == 2
+        max = (hd json_response(conn, 200)["features"])["properties"]["bed"]
+        Enum.map json_response(conn, 200)["features"], fn l ->
+          assert l["properties"]["bed"] <= max
+          max = l["properties"]["bed"]
+        end
+      end
+    end
+
+    context "bathrooms" do
+      it "by asc" do
+        conn = get conn, listing_path(conn, :index), %{sort_by: "bath_asc"}
+        assert json_response(conn, 200)["type"] == "FeatureCollection"
+        assert (length json_response(conn, 200)["features"]) == 2
+        min = (hd json_response(conn, 200)["features"])["properties"]["bath"]
+        Enum.map json_response(conn, 200)["features"], fn l ->
+          assert l["properties"]["bath"] >= min
+          min = l["properties"]["bath"]
+        end
+      end
+
+      it "by desc" do
+        conn = get conn, listing_path(conn, :index), %{sort_by: "bath_desc"}
+        assert json_response(conn, 200)["type"] == "FeatureCollection"
+        assert (length json_response(conn, 200)["features"]) == 2
+        max = (hd json_response(conn, 200)["features"])["properties"]["bath"]
+        Enum.map json_response(conn, 200)["features"], fn l ->
+          assert l["properties"]["bath"] <= max
+          max = l["properties"]["bath"]
+        end
+      end
     end
   end
 
