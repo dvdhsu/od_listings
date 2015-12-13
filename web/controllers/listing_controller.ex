@@ -30,6 +30,8 @@ defmodule OdListings.ListingController do
         "max_bed"   -> query |> where([l], l.bedrooms <= ^v)
         "min_bath"  -> query |> where([l], l.bathrooms >= ^v)
         "max_bath"  -> query |> where([l], l.bathrooms <= ^v)
+        "min_sqft" -> query  |> where([l], l.sq_ft >= ^v)
+        "max_sqft" -> query  |> where([l], l.sq_ft <= ^v)
         _ -> query
       end
     end)
@@ -40,9 +42,11 @@ defmodule OdListings.ListingController do
       "price_asc" ->  query |> order_by([l], asc: l.price)
       "bed_asc" ->    query |> order_by([l], asc: l.bedrooms)
       "bath_asc" ->   query |> order_by([l], asc: l.bathrooms)
+      "sqft_asc" ->   query |> order_by([l], asc: l.sq_ft)
       "price_desc" -> query |> order_by([l], desc: l.price)
       "bed_desc" ->   query |> order_by([l], desc: l.bedrooms)
       "bath_desc" ->  query |> order_by([l], desc: l.bathrooms)
+      "sqft_desc" ->  query |> order_by([l], desc: l.sq_ft)
       _ -> query
     end
     query

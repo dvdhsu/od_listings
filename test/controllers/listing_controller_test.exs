@@ -120,6 +120,30 @@ defmodule OdListings.ListingControllerTest do
         end
       end
     end
+
+    context "sq_ft" do
+      it "by asc" do
+        conn = get conn, listing_path(conn, :index), %{sort_by: "sqft_asc"}
+        assert json_response(conn, 200)["type"] == "FeatureCollection"
+        assert (length json_response(conn, 200)["features"]) == 2
+        min = (hd json_response(conn, 200)["features"])["properties"]["sq_ft"]
+        Enum.map json_response(conn, 200)["features"], fn l ->
+          assert l["properties"]["sq_ft"] >= min
+          min = l["properties"]["sq_ft"]
+        end
+      end
+
+      it "by desc" do
+        conn = get conn, listing_path(conn, :index), %{sort_by: "sqft_desc"}
+        assert json_response(conn, 200)["type"] == "FeatureCollection"
+        assert (length json_response(conn, 200)["features"]) == 2
+        max = (hd json_response(conn, 200)["features"])["properties"]["sqft"]
+        Enum.map json_response(conn, 200)["features"], fn l ->
+          assert l["properties"]["sqft"] <= max
+          max = l["properties"]["sqft"]
+        end
+      end
+    end
   end
 
   describe "filter" do
@@ -204,6 +228,28 @@ defmodule OdListings.ListingControllerTest do
         Enum.map json_response(conn, 200)["features"], fn l ->
           refute is_nil l["properties"]["bathrooms"]
           assert l["properties"]["bathrooms"] >= 2
+        end
+      end
+    end
+
+    context "sq_ft" do
+      it "by max" do
+        conn = get conn, listing_path(conn, :index), %{max_sqft: "500"}
+        assert json_response(conn, 200)["type"] == "FeatureCollection"
+        assert (length json_response(conn, 200)["features"]) == 1
+        Enum.map json_response(conn, 200)["features"], fn l ->
+          refute is_nil l["properties"]["sq_ft"]
+          assert l["properties"]["sq_ft"] <= 500
+        end
+      end
+
+      it "by min" do
+        conn = get conn, listing_path(conn, :index), %{min_sqft: "500"}
+        assert json_response(conn, 200)["type"] == "FeatureCollection"
+        assert (length json_response(conn, 200)["features"]) == 2
+        Enum.map json_response(conn, 200)["features"], fn l ->
+          refute is_nil l["properties"]["sq_ft"]
+          assert l["properties"]["sq_ft"] >= 500
         end
       end
     end
